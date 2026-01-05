@@ -15,11 +15,14 @@ services:
       - POSTGRES_USER=${POSTGRES_USER}
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
       - Jwt__Key=${JWT_KEY}
+      - FrontendUrl=${FrontendUrl:-http://localhost:5173}
 
   web:
     build:
       context: .
       dockerfile: EducaNet.Web/Dockerfile
+      args:
+        - VITE_API_URL=${VITE_API_URL:-http://localhost:5000/api}
     ports:
       - "3000:80"
     depends_on:
