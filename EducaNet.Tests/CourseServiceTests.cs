@@ -69,7 +69,7 @@ namespace EducaNet.Tests
         }
 
         [Fact]
-        public async Task DeleteCourse_ShouldCallDelete()
+        public async Task DeleteCourse_ShouldBeSoftDelete()
         {
             // Arrange
             var courseId = Guid.NewGuid();
@@ -78,6 +78,8 @@ namespace EducaNet.Tests
             await _service.DeleteAsync(courseId);
 
             // Assert
+            // In the service layer, we verify that the repository's DeleteAsync is called.
+            // The actual soft delete logic (setting IsDeleted = true) is implemented in the GenericRepository.
             _mockRepo.Verify(r => r.DeleteAsync(courseId), Times.Once);
         }
     }

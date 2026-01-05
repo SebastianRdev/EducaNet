@@ -7,7 +7,7 @@ EducaNet is a comprehensive course and lesson management system built with .NET 
 - .NET 8 SDK
 - Node.js 20+
 - Docker & Docker Compose (optional, for containerized execution)
-- PostgreSQL (Cloud or Local)
+- PostgreSQL (AWS RDS)
 
 ## Database Configuration
 
@@ -41,7 +41,7 @@ dotnet ef database update --project src/EducaNet.Infrastructure --startup-projec
 #### API
 1.  Navigate to `src/EducaNet.API`.
 2.  Run `dotnet run`.
-3.  The API will be available at `http://localhost:5000`.
+3.  The API will be available at `http://localhost:5047`.
 
 #### Frontend
 1.  Navigate to `EducaNet.Web`.

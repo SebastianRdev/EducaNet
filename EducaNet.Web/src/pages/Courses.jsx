@@ -11,16 +11,19 @@ const Courses = () => {
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
     const [searchTerm, setSearchTerm] = useState('');
     const [statusFilter, setStatusFilter] = useState('');
+    const [currentPage, setCurrentPage] = useState(1);
     const [selectedCourse, setSelectedCourse] = useState(null);
     const [isSummaryModalOpen, setIsSummaryModalOpen] = useState(false);
+    const [hasMore, setHasMore] = useState(true);
     const navigate = useNavigate();
 
     useEffect(() => {
         const fetchCourses = async () => {
             setLoading(true);
             try {
-                const data = await api.getCourses(1, statusFilter, searchTerm);
+                const data = await api.getCourses(currentPage, statusFilter, searchTerm);
                 setCourses(data);
+                setHasMore(data.length === 10); // Backend pageSize is 10
             } catch (err) {
                 setError('Failed to load courses.');
             } finally {
@@ -33,6 +36,11 @@ const Courses = () => {
         }, 300);
 
         return () => clearTimeout(debounceTimer);
+    }, [searchTerm, statusFilter, currentPage]);
+
+    // Reset to page 1 when filters change
+    useEffect(() => {
+        setCurrentPage(1);
     }, [searchTerm, statusFilter]);
 
     const handleCreateCourse = () => {
@@ -266,6 +274,33 @@ const Courses = () => {
                                 </div>
                             )}
                         </div>
+
+                        {/* Pagination */}
+                        {!loading && !error && courses.length > 0 && (
+                            <div className="flex items-center justify-between px-2">
+                                <p className="text-sm text-slate-500 dark:text-[#9692c9]">
+                                    Page <span className="font-bold text-slate-900 dark:text-white">{currentPage}</span>
+                                </p>
+                                <div className="flex gap-2">
+                                    <button
+                                        onClick={() => setCurrentPage(prev => Math.max(1, prev - 1))}
+                                        disabled={currentPage === 1}
+                                        className="h-10 px-4 rounded-xl border border-slate-200 dark:border-[#262348] bg-white dark:bg-[#1a1735] text-sm font-bold text-slate-600 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-[#0f0d1e] disabled:opacity-30 transition-all flex items-center gap-2"
+                                    >
+                                        <span className="material-symbols-outlined text-[18px]">chevron_left</span>
+                                        Previous
+                                    </button>
+                                    <button
+                                        onClick={() => setCurrentPage(prev => prev + 1)}
+                                        disabled={!hasMore}
+                                        className="h-10 px-4 rounded-xl border border-slate-200 dark:border-[#262348] bg-white dark:bg-[#1a1735] text-sm font-bold text-slate-600 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-[#0f0d1e] disabled:opacity-30 transition-all flex items-center gap-2"
+                                    >
+                                        Next
+                                        <span className="material-symbols-outlined text-[18px]">chevron_right</span>
+                                    </button>
+                                </div>
+                            </div>
+                        )}
                     </div>
                 </main>
             </div>
