@@ -13,13 +13,12 @@ EducaNet is a comprehensive course and lesson management system built with .NET 
 
 The application uses PostgreSQL. To configure the database:
 
-1.  Update the connection string in `src/EducaNet.API/appsettings.json` or via environment variables:
-    ```json
-    "ConnectionStrings": {
-      "DefaultConnection": "Host=your-host;Database=EducaNet;Username=your-user;Password=your-password"
-    }
+1.  Create a `.env` file in the root directory by copying the `.env.example` file:
+    ```bash
+    cp .env.example .env
     ```
-2.  The database is currently configured to connect to a cloud instance.
+2.  Open the `.env` file and update the database connection details with your actual cloud or local PostgreSQL credentials.
+3.  The application will automatically use these variables for both local execution and Docker.
 
 ## Migrations
 
@@ -48,8 +47,11 @@ dotnet ef database update --project src/EducaNet.Infrastructure --startup-projec
 
 To run the entire application using Docker:
 
-1.  Ensure your cloud database is accessible.
-2.  Run `docker-compose up --build`.
+1.  Ensure you have created and configured your `.env` file as described above.
+2.  Run the following command from the root directory:
+    ```bash
+    docker compose up --build
+    ```
 3.  The API will be at `http://localhost:5000` and the Web frontend at `http://localhost:3000`.
 
 ## Test User Credentials
