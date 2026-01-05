@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { api } from '../services/api';
 import { useNavigate } from 'react-router-dom';
 import Sidebar from '../components/Sidebar';
+import CourseSummaryModal from '../components/CourseSummaryModal';
 
 const Courses = () => {
     const [courses, setCourses] = useState([]);
@@ -10,6 +11,8 @@ const Courses = () => {
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
     const [searchTerm, setSearchTerm] = useState('');
     const [statusFilter, setStatusFilter] = useState('');
+    const [selectedCourse, setSelectedCourse] = useState(null);
+    const [isSummaryModalOpen, setIsSummaryModalOpen] = useState(false);
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -68,6 +71,11 @@ const Courses = () => {
         } catch (err) {
             alert('Failed to unpublish course');
         }
+    };
+
+    const handleViewSummary = (course) => {
+        setSelectedCourse(course);
+        setIsSummaryModalOpen(true);
     };
 
     return (
@@ -219,6 +227,13 @@ const Courses = () => {
                                                                 </button>
                                                             )}
                                                             <button
+                                                                onClick={() => handleViewSummary(course)}
+                                                                className="h-9 w-9 rounded-lg flex items-center justify-center text-slate-400 hover:text-primary hover:bg-primary/10 transition-all"
+                                                                title="View Summary"
+                                                            >
+                                                                <span className="material-symbols-outlined text-[20px]">visibility</span>
+                                                            </button>
+                                                            <button
                                                                 onClick={() => handleEditCourse(course.id)}
                                                                 className="h-9 w-9 rounded-lg flex items-center justify-center text-slate-400 hover:text-primary hover:bg-primary/10 transition-all"
                                                                 title="Edit"
@@ -254,6 +269,13 @@ const Courses = () => {
                     </div>
                 </main>
             </div>
+
+            {/* Summary Modal */}
+            <CourseSummaryModal
+                isOpen={isSummaryModalOpen}
+                onClose={() => setIsSummaryModalOpen(false)}
+                course={selectedCourse}
+            />
         </div>
     );
 };

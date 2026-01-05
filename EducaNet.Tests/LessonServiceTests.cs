@@ -1,6 +1,6 @@
-using EducaNet.Application.DTOs;
-using EducaNet.Application.Services;
 using EducaNet.Application.Interfaces;
+using EducaNet.Application.Services;
+using EducaNet.Application.DTOs;
 using EducaNet.Domain.Entities;
 using Moq;
 using System.Linq.Expressions;
@@ -26,10 +26,9 @@ namespace EducaNet.Tests
         {
             // Arrange
             var courseId = Guid.NewGuid();
-            var course = new Course { Id = courseId, Title = "Course 1" };
-            var dto = new CreateLessonDto { CourseId = courseId, Title = "Lesson 1", Order = 1 };
-
-            _mockCourseRepo.Setup(r => r.GetByIdAsync(courseId)).ReturnsAsync(course);
+            var dto = new CreateLessonDto { CourseId = courseId, Title = "New Lesson", Order = 1 };
+            
+            _mockCourseRepo.Setup(r => r.GetByIdAsync(courseId)).ReturnsAsync(new Course { Id = courseId });
             _mockLessonRepo.Setup(r => r.FindAsync(It.IsAny<Expression<Func<Lesson, bool>>>()))
                 .ReturnsAsync(new List<Lesson>()); // No existing lessons with same order
 
@@ -38,7 +37,7 @@ namespace EducaNet.Tests
 
             // Assert
             Assert.NotNull(result);
-            Assert.Equal(1, result.Order);
+            Assert.Equal(dto.Title, result.Title);
             _mockLessonRepo.Verify(r => r.AddAsync(It.IsAny<Lesson>()), Times.Once);
         }
 
@@ -47,17 +46,31 @@ namespace EducaNet.Tests
         {
             // Arrange
             var courseId = Guid.NewGuid();
-            var course = new Course { Id = courseId, Title = "Course 1" };
-            var dto = new CreateLessonDto { CourseId = courseId, Title = "Duplicate Order", Order = 1 };
-
-            _mockCourseRepo.Setup(r => r.GetByIdAsync(courseId)).ReturnsAsync(course);
+            var dto = new CreateLessonDto { CourseId = courseId, Title = "Duplicate Lesson", Order = 1 };
             
-            // Simulate existing lesson with same order
+            _mockCourseRepo.Setup(r => r.GetByIdAsync(courseId)).ReturnsAsync(new Course { Id = courseId });
             _mockLessonRepo.Setup(r => r.FindAsync(It.IsAny<Expression<Func<Lesson, bool>>>()))
-                .ReturnsAsync(new List<Lesson> { new Lesson { Id = Guid.NewGuid(), Order = 1 } });
+                .ReturnsAsync(new List<Lesson> { new Lesson { Id = Guid.NewGuid(), CourseId = courseId, Order = 1 } });
 
             // Act & Assert
             await Assert.ThrowsAsync<InvalidOperationException>(() => _service.CreateAsync(dto));
+        }
+
+        [Fact]
+        public async Task UpdateLesson_WithDuplicateOrder_ShouldFail()
+        {
+            // Arrange
+            var lessonId = Guid.NewGuid();
+            var courseId = Guid.NewGuid();
+            var lesson = new Lesson { Id = lessonId, CourseId = courseId, Title = "Old Title", Order = 1 };
+            var dto = new UpdateLessonDto { Title = "New Title", Order = 2 };
+
+            _mockLessonRepo.Setup(r => r.GetByIdAsync(lessonId)).ReturnsAsync(lesson);
+            _mockLessonRepo.Setup(r => r.FindAsync(It.IsAny<Expression<Func<Lesson, bool>>>()))
+                .ReturnsAsync(new List<Lesson> { new Lesson { Id = Guid.NewGuid(), CourseId = courseId, Order = 2 } });
+
+            // Act & Assert
+            await Assert.ThrowsAsync<InvalidOperationException>(() => _service.UpdateAsync(lessonId, dto));
         }
     }
 }

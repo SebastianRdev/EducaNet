@@ -15,7 +15,7 @@ services:
       - POSTGRES_USER=${POSTGRES_USER}
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
       - Jwt__Key=${JWT_KEY}
-      - FrontendUrl=${FrontendUrl:-http://localhost:5173}
+      - FrontendUrl=${FrontendUrl:-http://localhost:3000}
 
   web:
     build:

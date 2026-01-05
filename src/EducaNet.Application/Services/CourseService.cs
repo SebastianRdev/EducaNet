@@ -39,7 +39,9 @@ namespace EducaNet.Application.Services
                     Title = c.Title,
                     Status = c.Status.ToString(),
                     CreatedAt = c.CreatedAt,
-                    LessonsCount = c.Lessons.Count
+                    UpdatedAt = c.UpdatedAt,
+                    LessonsCount = c.Lessons.Count,
+                    LessonTitles = c.Lessons.OrderBy(l => l.Order).Select(l => l.Title).ToList()
                 })
                 .ToListAsync();
 
@@ -85,7 +87,9 @@ namespace EducaNet.Application.Services
                 Title = course.Title,
                 Status = course.Status.ToString(),
                 CreatedAt = course.CreatedAt,
-                LessonsCount = course.Lessons.Count
+                UpdatedAt = course.UpdatedAt,
+                LessonsCount = course.Lessons.Count,
+                LessonTitles = course.Lessons.OrderBy(l => l.Order).Select(l => l.Title).ToList()
             };
         }
 
