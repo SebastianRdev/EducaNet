@@ -17,7 +17,13 @@ The application uses PostgreSQL. To configure the database:
     ```bash
     cp .env.example .env
     ```
-2.  Open the `.env` file and update the database connection details with your actual cloud or local PostgreSQL credentials.
+2.  Open the `.env` file and update the following variables with your **actual cloud database credentials**:
+    - `POSTGRES_HOST`: The hostname or IP of your cloud database.
+    - `POSTGRES_PORT`: The port (usually 5432).
+    - `POSTGRES_DB`: The name of the database.
+    - `POSTGRES_USER`: Your database username.
+    - `POSTGRES_PASSWORD`: Your database password.
+    - `JWT_KEY`: A secure key for token generation (at least 32 characters).
 3.  The application will automatically use these variables for both local execution and Docker.
 
 ## Migrations
