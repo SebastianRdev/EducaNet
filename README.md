@@ -1,6 +1,39 @@
 # EducaNet
 
-EducaNet is a comprehensive course and lesson management system built with .NET 8 and React.
+EducaNet is a comprehensive course and lesson management system built with .NET 8 and React, following Clean Architecture principles.
+
+## 📸 Screenshots
+
+### Login
+![Login Screen](docs/screenshots/login.png)
+*Authentication screen with JWT*
+
+### Dashboard
+![Dashboard](docs/screenshots/dashboard.png)
+*System overview with course and lesson metrics*
+
+### Course Management
+![Course List](docs/screenshots/course-list.png)
+*Course list with pagination, status filters and search*
+
+### Lesson Management
+![Lesson List](docs/screenshots/lesson-list.png)
+*Lesson list with pagination, status filters and search*
+
+### API Documentation
+![Swagger UI](docs/screenshots/swagger.png)
+*Interactive API documentation with JWT authentication*
+
+## 📊 Models and Flows
+
+### Data Model (ERD)
+![Entity Relationship Diagram](docs/EntityRelationshipDiagram.png)
+*Database structure, relationships and audit fields.*
+
+## 🏗️ Architecture
+
+![System Architecture](docs/SystemArchitectureDiagram.png)
+*System architecture diagram showing layer separation and data flow*
 
 ## Prerequisites
 
