@@ -16,6 +16,7 @@ dist/
 # IDE
 .vs/
 .vscode/
+.idea/
 *.user
 *.userossc
 *.sln.docstate
