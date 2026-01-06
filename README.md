@@ -50,18 +50,18 @@ The application uses PostgreSQL. To configure the database:
     ```bash
     cp .env.example .env
     ```
-2.  Open the `.env` file and update the following variables with your **actual cloud database credentials**:
-    - `POSTGRES_HOST`: The hostname or IP of your cloud database.
-    - `POSTGRES_PORT`: The port (usually 5432).
-    - `POSTGRES_DB`: The name of the database.
-    - `POSTGRES_USER`: Your database username.
-    - `POSTGRES_PASSWORD`: Your database password.
-    - `JWT_KEY`: A secure key for token generation (at least 32 characters).
+2.  Open the `.env` file and update the following variables with your **actual cloud database credentials**, You can use these credentials from an existing database:
+    - `POSTGRES_HOST`: educanet-db.cl0wc426ugro.us-east-2.rds.amazonaws.com (The hostname or IP of your cloud database)
+    - `POSTGRES_PORT`: 5432 (The port (usually 5432)
+    - `POSTGRES_DB`: postgres (The name of the database)
+    - `POSTGRES_USER`: postgres (Your database username)
+    - `POSTGRES_PASSWORD`: OVvSoVANaPEkElSY8kf9 (Your database password)
+    - `JWT_KEY`: super_secret_key_1234567890123456 | A secure key for token generation (at least 32 characters).
 3.  The application will automatically use these variables for both local execution and Docker.
 
 ## Migrations
 
-To apply database migrations, run the following command from the root directory:
+The database already contains the 2 necessary tables and the test user. However, if you wish to apply or update migrations, run the following command from the root directory:
 
 ```bash
 dotnet ef database update --project src/EducaNet.Infrastructure --startup-project src/EducaNet.API
